@@ -390,7 +390,7 @@ export default function Home() {
               </div>
               <div className={styles.description}>
                 {/* Format Ether helps us in converting a BigNumber to string */}
-                Overall {utils.formatEther(tokensMinted)}/50000 have been minted!!!
+                Overall {utils.formatEther(tokensMinted)}/10000 have been minted!!!
               </div>
               {renderButton()}
             </div>
@@ -398,7 +398,7 @@ export default function Home() {
             <button onClick={connectWallet} className={styles.button}>
               Connect your wallet
             </button>
-            
+
           )}
         </div>
         <div>

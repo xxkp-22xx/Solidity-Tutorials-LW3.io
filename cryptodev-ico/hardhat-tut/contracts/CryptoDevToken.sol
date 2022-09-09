@@ -16,7 +16,7 @@
       // More information on this can be found in the Freshman Track Cryptocurrency tutorial.
       uint256 public constant tokensPerNFT = 10 * 10**18;
       // the max total supply is 10000 for Crypto Dev Tokens
-      uint256 public constant maxTotalSupply = 50000 * 10**18;
+      uint256 public constant maxTotalSupply = 10000 * 10**18;
       // CryptoDevsNFT contract instance
       ICryptoDevs CryptoDevsNFT;
       // Mapping to keep track of which tokenIds have been claimed
