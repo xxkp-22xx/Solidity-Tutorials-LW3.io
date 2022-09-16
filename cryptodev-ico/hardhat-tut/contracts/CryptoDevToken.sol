@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+//SPDX-License-Identifier: MIT
   pragma solidity ^0.8.0;
 
   import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -26,12 +26,8 @@
           );
           _mint(msg.sender, amountWithDecimals);
       }
-      function balanceOfOwnedTokens() public {
-        address sender = msg.sender;
-        uint256 balance = CryptoDevToken.balanceOf(sender);
-        require(balance > 0, "You do not own any Crypto Dev Tokens");
-        
-        return balance;
+      function balanceOfOwnedTokens() public returns(uint256) {      
+        return balanceOfOwnedTokens();
       }
     
       function claim() public {
