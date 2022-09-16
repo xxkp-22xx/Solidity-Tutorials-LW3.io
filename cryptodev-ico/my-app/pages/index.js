@@ -33,6 +33,15 @@ export default function Home() {
   // Create a reference to the Web3 Modal (used for connecting to Metamask) which persists as long as the page is open
   const web3ModalRef = useRef();
 
+  const ownedTokens = () => {
+    const tokenContract = new Contract(
+      TOKEN_CONTRACT_ADDRESS,
+      TOKEN_CONTRACT_ABI,
+      provider
+    );
+    const withdrawnTokens = tokenContract.balanceOf(address);
+    return ownedTokens;
+  }
   /**
    * getTokensToBeClaimed: checks the balance of tokens that can be claimed by the user
    */
@@ -59,6 +68,7 @@ export default function Home() {
       const address = await signer.getAddress();
       // call the balanceOf from the NFT contract to get the number of NFT's held by the user
       const balance = await nftContract.balanceOf(address);
+     
       // balance is a Big number and thus we would compare it with Big number `zero`
       if (balance === zero) {
         setTokensToBeClaimed(zero);
@@ -400,6 +410,9 @@ export default function Home() {
             </button>
 
           )}
+        </div>
+        <div>
+          <h3>Your withdrawn tokens: {utils.formatEther(ownedTokens)} </h3>
         </div>
         <div>
           <img className={styles.image} src="./0.svg" />
