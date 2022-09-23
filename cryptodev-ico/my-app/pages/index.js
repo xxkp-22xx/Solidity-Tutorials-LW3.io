@@ -31,6 +31,8 @@ export default function Home() {
   // isOwner gets the owner of the contract through the signed address
   const [isOwner, setIsOwner] = useState(false);
   // Create a reference to the Web3 Modal (used for connecting to Metamask) which persists as long as the page is open
+  const [balanceOfOwnedTokens, setBalanceOfOwnedTokens] = useState('0');
+
   const web3ModalRef = useRef();
 
   /**
@@ -82,6 +84,25 @@ export default function Home() {
     } catch (err) {
       console.error(err);
       setTokensToBeClaimed(zero);
+    }
+  };
+  const totalCDBalance = async () => {
+    try {
+      const provider = await getProviderOrSigner();
+      const tokenContract = new Contract(
+        TOKEN_CONTRACT_ADDRESS,
+        TOKEN_CONTRACT_ABI,
+        provider
+      );
+      balanceOfOwnedTokens = 0;
+      const signer = await getProviderOrSigner(true);
+      const address = await signer.getAddress();
+      const balance = await tokenContract.balanceOfOwnedTokens(address);
+      setBalanceOfOwnedTokens(balance);
+
+    } catch (err) {
+      console.error(err);
+      setBalanceOfOwnedTokens('0')
     }
   };
 
@@ -204,7 +225,7 @@ export default function Home() {
   const getOwner = async () => {
     try {
       const provider = await getProviderOrSigner();
-      const nftContract = new Contract(TOKEN_CONTRACT_ADDRESS, TOKEN_CONTRACT_ABI, provider);
+      const tokenContract = new Contract(TOKEN_CONTRACT_ADDRESS, TOKEN_CONTRACT_ABI, provider);
       // call the owner function from the contract
       const _owner = await tokenContract.owner();
       // we get signer to extract address of currently connected Metamask account
@@ -260,7 +281,7 @@ export default function Home() {
     const provider = await web3ModalRef.current.connect();
     const web3Provider = new providers.Web3Provider(provider);
 
-    // If user is not connected to the Rinkeby network, let them know and throw an error
+    // If user is not connected to the Goerli network, let them know and throw an error
     const { chainId } = await web3Provider.getNetwork();
     if (chainId !== 5) {
       window.alert("Change the network to Goerli");
@@ -390,7 +411,7 @@ export default function Home() {
               </div>
               <div className={styles.description}>
                 {/* Format Ether helps us in converting a BigNumber to string */}
-                Overall {utils.formatEther(tokensMinted)}/50000 have been minted!!!
+                Overall {utils.formatEther(tokensMinted)}/10000 have been minted!!!
               </div>
               {renderButton()}
             </div>
@@ -398,8 +419,10 @@ export default function Home() {
             <button onClick={connectWallet} className={styles.button}>
               Connect your wallet
             </button>
-            
           )}
+          <div>
+            <h3>Your withdrawn tokens {totalCDBalance} </h3>
+          </div>
         </div>
         <div>
           <img className={styles.image} src="./0.svg" />
@@ -410,5 +433,5 @@ export default function Home() {
         Made with &#10084; by Crypto Devs
       </footer>
     </div>
-  )
-};
+  );
+}
